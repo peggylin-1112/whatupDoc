@@ -1,0 +1,16 @@
+The task is to create a vehicle price calculator whose requirements are to reduce
+amounts from the RRP based on certain criteria
+Each of the following criteria will reduce a % from the RRP based on the original RRP
+MOT
+Over 1 year - reduce 25% price
+Between 6 months and 1 year - reduce 5% price
+Under 6 months - reduce 0% price
+Service
+If greater than 3 years - reduce 30% price
+Between 3 and 1 year - reduce 10% price
+Between 6 months and 1 year - reduce  5% price
+Under 6 months - reduce  0% price
+DamageCheck
+Red - reduce 90% price
+Orange - reduce 50% price
+Green - reduce 0% price
