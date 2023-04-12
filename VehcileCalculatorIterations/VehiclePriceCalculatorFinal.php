@@ -14,12 +14,12 @@ class VehiclePriceCalculatorFinal
     public function getPrice(): float
     {
         $price = $this->rrp;
+        $totalToDeduct = 0;
+        $totalToDeduct += $price * $this->getMotMultiplier();
+        $totalToDeduct += $price * $this->getServiceMultiplier();
+        $totalToDeduct += $price * $this->getDamageCheckMultiplier();
 
-        $price *= $this->getMotMultiplier();
-        $price *= $this->getServiceMultiplier();
-        $price *= $this->getDamageCheckMultiplier();
-
-        return $price;
+        return $price - $totalToDeduct;
     }
 
     private function getMotMultiplier(): float
