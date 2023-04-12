@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-class VehiclePriceCalculator
+class VehiclePriceCalculatorFinal
 {
     public function __construct(
         private readonly float $rrp,
