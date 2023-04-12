@@ -1,7 +1,86 @@
 {
-    "isValid": true,
-    "documentation": {
-        "description": "This PHP class calculates the final price of a vehicle based on its RRP, last MOT date, last service date, and damage check result. It applies reductions to the RRP based on the given criteria and returns the final price with a floor value of £0.",
-        "howToUseIt": "Create an instance of the VehiclePriceCalculatorFinalFinal class by providing the RRP, damage check result, last MOT date, and last service date as arguments. Then, call the getPrice() method on the instance to get the final price of the vehicle. Example: $calculator = new VehiclePriceCalculatorFinalFinal(10000, 'Orange', new DateTimeImmutable('2020-01-01'), new DateTimeImmutable('2021-01-01')); $finalPrice = $calculator->getPrice();"
+  "isValid": true,
+  "improvements": [
+    "Add type hint for the return type of the constructor.",
+    "Use constants for the reduction percentages to make the code more maintainable.",
+    "Use a switch statement for the damage check reduction calculation to improve readability."
+  ],
+  "documentation": "This code calculates the price of a vehicle based on its recommended retail price (RRP), damage check result, last MOT date, and last service date. The price is reduced based on the time since the last MOT and service, as well as the damage check result. The final price is returned by the getPrice() method.",
+  "improved_code": "<?php
+
+declare(strict_types=1);
+
+class VehiclePriceCalculatorFinalFinal
+{
+    private const MOT_REDUCTION_1Y = 0.25;
+    private const MOT_REDUCTION_6M = 0.05;
+    private const SERVICE_REDUCTION_3Y = 0.3;
+    private const SERVICE_REDUCTION_1Y = 0.1;
+    private const SERVICE_REDUCTION_6M = 0.05;
+    private const DAMAGE_REDUCTION_RED = 0.9;
+    private const DAMAGE_REDUCTION_ORANGE = 0.5;
+
+    public function __construct(
+        private readonly float $rrp,
+        private readonly string $damageCheckResult,
+        private readonly DateTimeImmutable $lastMotDate,
+        private readonly DateTimeImmutable $lastServiceDate,
+    ) {}
+
+    public function getPrice(): float
+    {
+        $price = $this->rrp;
+        $price -= $this->getMotReduction();
+        $price -= $this->getServiceReduction();
+        $price -= $this->getDamageCheckReduction();
+
+        return max($price, 0);
     }
+
+    private function getMotReduction(): float
+    {
+        $currentDate = new DateTimeImmutable();
+
+        if ($currentDate > $this->lastMotDate->add(new DateInterval('P1Y'))) {
+            return $this->rrp * self::MOT_REDUCTION_1Y;
+        }
+
+        if ($currentDate > $this->lastMotDate->add(new DateInterval('P6M'))) {
+            return $this->rrp * self::MOT_REDUCTION_6M;
+        }
+
+        return 0;
+    }
+
+    private function getServiceReduction(): float
+    {
+        $currentDate = new DateTimeImmutable();
+
+        if ($currentDate > $this->lastServiceDate->add(new DateInterval('P3Y'))) {
+            return $this->rrp * self::SERVICE_REDUCTION_3Y;
+        }
+
+        if ($currentDate > $this->lastServiceDate->add(new DateInterval('P1Y'))) {
+            return $this->rrp * self::SERVICE_REDUCTION_1Y;
+        }
+
+        if ($currentDate > $this->lastServiceDate->add(new DateInterval('P6M'))) {
+            return $this->rrp * self::SERVICE_REDUCTION_6M;
+        }
+
+        return 0;
+    }
+
+    private function getDamageCheckReduction(): float
+    {
+        switch ($this->damageCheckResult) {
+            case 'Red':
+                return $this->rrp * self::DAMAGE_REDUCTION_RED;
+            case 'Orange':
+                return $this->rrp * self::DAMAGE_REDUCTION_ORANGE;
+            default:
+                return 0;
+        }
+    }
+}"
 }
