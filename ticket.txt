@@ -1,16 +1,75 @@
-The task is to create a vehicle price calculator whose requirements are to reduce
-amounts from the RRP based on certain criteria
-Each of the following criteria will reduce a % from the RRP based on the original RRP
-MOT
-Over 1 year - reduce 25% price
-Between 6 months and 1 year - reduce 5% price
-Under 6 months - reduce 0% price
-Service
-If greater than 3 years - reduce 30% price
-Between 3 and 1 year - reduce 10% price
-Between 6 months and 1 year - reduce  5% price
-Under 6 months - reduce  0% price
-DamageCheck
-Red - reduce 90% price
-Orange - reduce 50% price
-Green - reduce 0% price
+Context
+
+We secure our loans against the value of the vehicle a customer is looking to buy. This means that if the customer doesn’t pay their loan back, we are able to repossess the vehicle and sell it. This provides protection against losses. 
+
+To make sure we are adequately protected, we have to correctly value the vehicles that customers are buying. This makes sure that we can sell the vehicle for a large enough amount in the event of default. 
+
+Task
+
+Build logic to calculate the price of a vehicle, based on: 
+
+Date of last MOT
+
+Date of last service
+
+Vehicle Damage
+
+These variables will impact the vehicle's value (Recommended Retail Price) as below:
+
+Date of last MOT
+
+Over 1 year ago - reduce vehicle value by (RRP * 25%)
+
+Between 6 months and 1 year ago -reduce vehicle value by (RRP * 5%)
+
+Less than 6 months ago - no impact on RRP
+
+Date of last service 
+
+More than 3 years ago -  reduce vehicle value by (RRP * 30%)
+
+Between 1 and 3 years ago - reduce vehicle value by (RRP * 10%)
+
+Between 6 months and 1 year ago - reduce vehicle value by (RRP * 5%)
+
+Under 6 months - no impact on RRP
+
+Vehicle Damage
+
+If Red - reduce vehicle value by (RRP * 90%)
+
+If Orange - reduce vehicle value by (RRP * 50%) 
+
+If Green - No impact on RRP
+
+Subject to a floor value of £0
+
+Acceptance Criteria
+
+Example 1
+
+Given a vehicle has properties below:
+
+RRP: £10000
+MOT: Over 1 year
+Service: Under 6 months
+DamageCheck: Orange
+
+When we ask for the final price of vehicle
+Then the price is £2500 
+
+Calculations: 10,000 - 2,500 (MOT) - 0 (Service) - 5,000 (DamageCheck)
+
+Example 2
+
+Given a vehicle has properties below:
+
+RRP: £10000
+MOT: Over 1 year
+Service: Under 6 months
+DamageCheck: Red
+
+When we ask for the final price of vehicle
+Then the price is £0 
+
+Calculations: 10,000 - 2,500 (MOT) - 0 (Service) - 9,000 (DamageCheck) = -1500, use floor of 0

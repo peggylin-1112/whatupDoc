@@ -1,0 +1,7 @@
+{
+    "isValid": true,
+    "documentation": {
+        "description": "This PHP class calculates the final price of a vehicle based on its RRP, last MOT date, last service date, and damage check result. It applies reductions to the RRP based on the given criteria and returns the final price with a floor value of £0.",
+        "howToUseIt": "Create an instance of the VehiclePriceCalculatorFinalFinal class by providing the RRP, damage check result, last MOT date, and last service date as arguments. Then, call the getPrice() method on the instance to get the final price of the vehicle. Example: $calculator = new VehiclePriceCalculatorFinalFinal(10000, 'Orange', new DateTimeImmutable('2020-01-01'), new DateTimeImmutable('2021-01-01')); $finalPrice = $calculator->getPrice();"
+    }
+}

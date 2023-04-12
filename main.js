@@ -10,28 +10,43 @@ const configuration = new Configuration({
 });
 const openai = new OpenAIApi(configuration);
 
-const getClassString = () => {
-    return fs.readFileSync('./some.php', 'utf8');
-}
-
 const getTicketInfo = () => {
     return fs.readFileSync('./ticket.txt', 'utf8');
 }
 
-const ticketData = getTicketInfo();
-const classString = getClassString();
+const getCode = () => {
+    return fs.readFileSync('./PhpClass.php', 'utf8');
+}
 
-const getGptMessage = async (classString, ticketData) => {
+const ticketData = getTicketInfo();
+const classData = getCode();
+
+const createRequestMessage = (classData, ticketData) => {
+    return `I have the following task:
+
+    ${ticketData}
+    
+    Does this code complete this task? Please respond in json format, with the following:
+    isValid: will be true if the task is complete.
+    improvements: will give code improvements and give suggestions for clean code, it should give examples of all things that are wrong or missing.
+    message: will be included if isValid is false, it will explain why the task is not completed. 
+    documentation: will be included if isValid is true. The documentation should simplify the task and code to remind me at a later date what is happening in 'description' session and contain 'how to use it' session.
+
+    ${classData}
+    `;
+}
+
+const getGptMessage = async (classData, ticketData) => {
     const completion = await openai.createChatCompletion({
         "model": "gpt-4",
         "messages": [{
             "role": "user", 
-            "content": `Please check if this code ${classString} meets the requirements for this task ${ticketData}`,
+            "content": createRequestMessage(classData, ticketData),
         }],
+        "temperature": 0.2,
     });
 
     const content = completion.data.choices[0].message.content;
-    console.log(content);
 
     fs.writeFile('./response.txt', content, err => {
         if (err) {
@@ -40,4 +55,5 @@ const getGptMessage = async (classString, ticketData) => {
     });
 }
 
-console.log(await getGptMessage(ticketData, classString));
+getGptMessage(classData, ticketData);
+
