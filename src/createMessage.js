@@ -12,7 +12,7 @@ const createMessage = (prLink) => {
     });
 
     return `
-    As a code reviewer you are able to review the code in these file links: ${fileString}
+    As a code reviewer you are able to review the code in ${prInfo.files.length === 1 ? 'this file link' : 'these file links'}: ${fileString}
     You should use this trello task link ${ticketLink} and understand the requirements in the content.
         When reviewing the code in each file link you should ensure that the task requirements have been met. You will need to read all files to ensure you have a full understanding of what has been completed.
         Things to remember when doing a code review, is to ensure that the code is tested for any scenarios that the task has specified. The code should also be readable where classes have a single responsibility
@@ -29,6 +29,10 @@ const createMessage = (prLink) => {
         reviewOverview: give reasons as why you came to the conclusion of your code review
         message: will be included if isValid is false, it will explain exactly why the task was not completed correctly with reasons for each. 
         documentation: will be included if isValid is true. The documentation should simplify the task and code to remind me at a later date what is happening.
+        purpose: generate document context for this file
+        feature: describe the main features of the software and how to use them
+        flowchart: tell me the flowchart of this feature
+        further
     `;
 }
 
