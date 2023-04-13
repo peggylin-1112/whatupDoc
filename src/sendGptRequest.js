@@ -16,7 +16,7 @@ const sendGptRequest = async (message) => {
             "role": "user", 
             "content": message,
         }],
-        "temperature": 0.2,
+        "temperature": 0,
     });
 
     const content = completion.data.choices[0].message.content;

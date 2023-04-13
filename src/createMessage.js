@@ -12,11 +12,11 @@ const createMessage = (prLink) => {
     });
 
     return `
-    As a code reviewer you are able to review the code in ${prInfo.files.length === 1 ? 'this file link' : 'these file links'}: ${fileString}
-    You should use this trello task link ${ticketLink} and understand the requirements in the content.
-        When reviewing the code in each file link you should ensure that the task requirements have been met. You will need to read all files to ensure you have a full understanding of what has been completed.
-        Things to remember when doing a code review, is to ensure that the code is tested for any scenarios that the task has specified. The code should also be readable where classes have a single responsibility
-        and no unused variables. 
+    As a code reviewer you are able to review the code in these files: ${fileString}
+    You should open this trello task link ${ticketLink} and understand the requirements in the content.
+    When reviewing the code in each file you should ensure that the task requirements have been met and the code can achieve all scenarios specified in the task. You will need to read all files to ensure you have a full understanding of what has been completed.
+    Things to remember when doing a code review, the code must meet all requirements for the given task, to ensure that the code is tested for any scenarios that the task has specified. The code should also be readable where classes have a single responsibility
+    and no unused variables. 
     Please respond to the code review in json format, with the following:
         task: it will explain the task to achieve
         code: it will explain what php code has been found
