@@ -49,6 +49,8 @@ const getPrInfo = (pr) => {
     if (pr === 'https://github.com/peggylin-1112/vehiclePriceCalculator/pull/2') {
         return poorPr;
     }
+
+    throw new Error('PR not found');
 }
 
-export default getPrInfo
+export default getPrInfo;

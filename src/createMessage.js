@@ -1,13 +1,13 @@
-import getFiles from "./getFiles.js";
-import getTicket from "./getTicket.js";
+import getPrInfo from "./pullRequests.js";
 
-const createMessage = () => {
-    const ticketLink = getTicket();
-    const files = getFiles();
+const createMessage = (prLink) => {
+    const prInfo = getPrInfo(prLink);
+
+    const ticketLink = prInfo.trello;
 
     let fileString = "";
 
-    files.split(/\r?\n/).forEach(line =>  {
+    prInfo.files.forEach(line =>  {
         fileString += `- ${line}`;
     });
 
