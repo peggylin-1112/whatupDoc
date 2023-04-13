@@ -15,24 +15,14 @@ const createMessage = (prLink) => {
     As a code reviewer you are able to review the code in these files: ${fileString}
     You should open this trello task link ${ticketLink} and understand the requirements in the content.
     When reviewing the code in each file you should ensure that the task requirements have been met and the code can achieve all scenarios specified in the task. You will need to read all files to ensure you have a full understanding of what has been completed.
-    Things to remember when doing a code review, the code must meet all requirements for the given task, to ensure that the code is tested for any scenarios that the task has specified. The code should also be readable where classes have a single responsibility
-    and no unused variables. 
+    Things to remember when doing a code review, the code must meet all requirements for the given task, to ensure that the code is tested for any scenarios that the task has specified. The code should also be readable where classes have a single responsibility. 
     Please respond to the code review in json format, with the following:
-        task: it will explain the task to achieve
-        code: it will explain what php code has been found
-        trelloTaskLink: it will show the contents of the trello task
-        numberOfFiles: it will count the number of files that were reviewed
-        filesReviewed: list the files reviewed with the code for each
-        successRate: it will state how confident you are code reviewing this code
+        confidenceRating: it will state how confident you are as a percentage of your review and understanding of this code
         isValid: will be true if the task is complete.
         hasTests: does the code contain tests 
         reviewOverview: give reasons as why you came to the conclusion of your code review
-        message: will be included if isValid is false, it will explain exactly why the task was not completed correctly with reasons for each. 
-        documentation: will be included if isValid is true. The documentation should simplify the task and code to remind me at a later date what is happening.
-        purpose: generate document context for this file
-        feature: describe the main features of the software and how to use them
-        flowchart: tell me the flowchart of this feature
-        further
+        message: will be included if isValid is false, it will list all missing requirments and tasks and explain exactly why the task was not completed correctly. 
+        documentation: will be omitted if isValid is false. The documentation should simplify the task and code to remind me at a later date what is happening. The documentation should also explain how we can add new requirements to the code and comply to the open-closed principle. Please write this as nicely formatted and verbose markdown.
     `;
 }
 

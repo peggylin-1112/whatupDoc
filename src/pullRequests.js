@@ -1,3 +1,5 @@
+import fs from "fs";
+
 const trelloTask = 'Context\n' +
     '\n' +
     'We secure our loans against the value of the vehicle a customer is looking to buy. This means that if the customer doesn’t pay their loan back, we are able to repossess the vehicle and sell it. This provides protection against losses. \n' +
@@ -77,6 +79,25 @@ const trelloTask = 'Context\n' +
 const completedPR = {
     'trello': trelloTask,
     'files': [
+        'https://raw.githubusercontent.com/peggylin-1112/vehiclePriceCalculator/059bf2935577f327ad12b5b755743cb5a115048a/src/VehicleCalculator/DamageCheckPricePriceReductionCalculator.php',
+        'https://raw.githubusercontent.com/peggylin-1112/vehiclePriceCalculator/059bf2935577f327ad12b5b755743cb5a115048a/src/VehicleCalculator/Enum/DamageCheckResult.php',
+        'https://raw.githubusercontent.com/peggylin-1112/vehiclePriceCalculator/059bf2935577f327ad12b5b755743cb5a115048a/src/VehicleCalculator/MotPricePriceReductionCalculator.php',
+        'https://raw.githubusercontent.com/peggylin-1112/vehiclePriceCalculator/059bf2935577f327ad12b5b755743cb5a115048a/src/VehicleCalculator/PriceReductionCalculator.php',
+        'https://raw.githubusercontent.com/peggylin-1112/vehiclePriceCalculator/059bf2935577f327ad12b5b755743cb5a115048a/src/VehicleCalculator/ServicePricePriceReductionCalculator.php',
+        'https://raw.githubusercontent.com/peggylin-1112/vehiclePriceCalculator/059bf2935577f327ad12b5b755743cb5a115048a/src/VehicleCalculator/ValueObject/Vehicle.php',
+        'https://raw.githubusercontent.com/peggylin-1112/vehiclePriceCalculator/059bf2935577f327ad12b5b755743cb5a115048a/src/VehicleCalculator/VehiclePriceCalculator.php',
+        'https://raw.githubusercontent.com/peggylin-1112/vehiclePriceCalculator/059bf2935577f327ad12b5b755743cb5a115048a/tests/VehicleCalculator/DamageCheckPriceReductionCalculatorTest.php',
+        'https://raw.githubusercontent.com/peggylin-1112/vehiclePriceCalculator/059bf2935577f327ad12b5b755743cb5a115048a/tests/VehicleCalculator/MotPriceReductionCalculatorTest.php',
+        'https://raw.githubusercontent.com/peggylin-1112/vehiclePriceCalculator/059bf2935577f327ad12b5b755743cb5a115048a/tests/VehicleCalculator/ServicePriceReductionCalculatorTest.php',
+        'https://raw.githubusercontent.com/peggylin-1112/vehiclePriceCalculator/059bf2935577f327ad12b5b755743cb5a115048a/tests/VehicleCalculator/VehiclePriceCalculatorTest.php',
+    ]
+};
+
+const prFour = fs.readFileSync('./src/prFour.php', 'utf8');
+
+const almostTherePR = {
+    'trello': trelloTask,
+    'files': [
         'https://raw.githubusercontent.com/peggylin-1112/vehiclePriceCalculator/ade6cc202040771c3aaa896613fa47cddba05ef8/src/VehicleCalculator/DamageCheckPriceReductionCalculator.php',
         'https://raw.githubusercontent.com/peggylin-1112/vehiclePriceCalculator/ade6cc202040771c3aaa896613fa47cddba05ef8/src/VehicleCalculator/Enum/DamageCheckResult.php',
         'https://raw.githubusercontent.com/peggylin-1112/vehiclePriceCalculator/ade6cc202040771c3aaa896613fa47cddba05ef8/src/VehicleCalculator/MotPriceReductionCalculator.php',
@@ -85,87 +106,6 @@ const completedPR = {
         'https://raw.githubusercontent.com/peggylin-1112/vehiclePriceCalculator/ade6cc202040771c3aaa896613fa47cddba05ef8/tests/VehicleCalculator/MotPriceReductionCalculatorTest.php',
         'https://raw.githubusercontent.com/peggylin-1112/vehiclePriceCalculator/ade6cc202040771c3aaa896613fa47cddba05ef8/tests/VehicleCalculator/ServicePriceReductionCalculatorTest.php',
         'https://raw.githubusercontent.com/peggylin-1112/vehiclePriceCalculator/ade6cc202040771c3aaa896613fa47cddba05ef8/tests/VehicleCalculator/VehiclePriceCalculatorTest.php',
-    ]
-};
-
-const almostTherePR = {
-    'trello': trelloTask,
-    'files': [
-        '<?php\n' +
-        '\n' +
-        'declare(strict_types=1);\n' +
-        '\n' +
-        'use DateInterval;\n' +
-        'use DateTimeImmutable;\n' +
-        '\n' +
-        'class VehiclePriceCalculator\n' +
-        '{\n' +
-        '    public function __construct(\n' +
-        '        private readonly float             $rrp,\n' +
-        '        private readonly string            $damageCheckResult,\n' +
-        '        private readonly DateTimeImmutable $lastMotDate,\n' +
-        '        private readonly DateTimeImmutable $lastServiceDate,\n' +
-        '    ) {\n' +
-        '    }\n' +
-        '\n' +
-        '    public function getPrice(): float\n' +
-        '    {\n' +
-        '        $price = $this->rrp;\n' +
-        '\n' +
-        '        $price *= $this->getMotMultiplier();\n' +
-        '        $price *= $this->getServiceMultiplier();\n' +
-        '        $price *= $this->getDamageCheckMultiplier();\n' +
-        '\n' +
-        '        return $price;\n' +
-        '    }\n' +
-        '\n' +
-        '    private function getMotMultiplier(): float\n' +
-        '    {\n' +
-        '        $currentDate = new DateTimeImmutable();\n' +
-        '\n' +
-        '        if ($currentDate < $this->lastMotDate->add(new DateInterval(\'P1Y\'))) {\n' +
-        '            return 0.25;\n' +
-        '        }\n' +
-        '\n' +
-        '        if ($currentDate < $this->lastMotDate->add(new DateInterval(\'P6M\'))) {\n' +
-        '            return 0.05;\n' +
-        '        }\n' +
-        '\n' +
-        '        return 1;\n' +
-        '    }\n' +
-        '\n' +
-        '    private function getServiceMultiplier(): float\n' +
-        '    {\n' +
-        '        $currentDate = new DateTimeImmutable();\n' +
-        '\n' +
-        '        if ($currentDate > $this->lastServiceDate->add(new DateInterval(\'P3Y\'))) {\n' +
-        '            return 0.35;\n' +
-        '        }\n' +
-        '\n' +
-        '        if ($currentDate > $this->lastServiceDate->add(new DateInterval(\'P1Y\'))) {\n' +
-        '            return 0.1;\n' +
-        '        }\n' +
-        '\n' +
-        '        if ($currentDate > $this->lastServiceDate->add(new DateInterval(\'P6M\'))) {\n' +
-        '            return 0.05;\n' +
-        '        }\n' +
-        '\n' +
-        '        return 1;\n' +
-        '    }\n' +
-        '\n' +
-        '    private function getDamageCheckMultiplier(): float\n' +
-        '    {\n' +
-        '        if ($this->damageCheckResult === \'Red\') {\n' +
-        '            return 0.9;\n' +
-        '        }\n' +
-        '\n' +
-        '        if ($this->damageCheckResult === \'Orange\') {\n' +
-        '            return 0.5;\n' +
-        '        }\n' +
-        '\n' +
-        '        return 1;\n' +
-        '    }\n' +
-        '}',
     ]
 };
 
