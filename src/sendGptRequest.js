@@ -21,7 +21,7 @@ const sendGptRequest = async (message) => {
 
     const content = completion.data.choices[0].message.content;
 
-    fs.writeFile('../response.txt', content, err => {
+    fs.writeFile('./response.txt', content, err => {
         if (err) {
           console.error(err);
         }
